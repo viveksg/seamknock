@@ -1,0 +1,14 @@
+class Constants:
+    CONSTANT_EMAILID="emailID"
+    CONSTANT_LOCKID="lock_id"
+    CONSTANT_LATITUDE="latitude"
+    CONSTANT_LONGITUDE="longitude"
+    CONSTANT_RADIUS="geofence_radius"
+    CONSTANT_API_KEY="api_key"
+    CONSTANT_API_SECRET="api_secret"
+    CONSTANT_REQUEST_TYPE="request_type"
+    REQUEST_CREATE_GEOFENCE=1000
+    REQUEST_ACCESS_GEOFENCE=1001
+    ASCII_ZERO_START=48
+    ASCII_A_START=65
+    ASCII_SMALL_A_START=97
