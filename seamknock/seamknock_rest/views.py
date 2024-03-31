@@ -51,6 +51,7 @@ class Geo_fence_View(APIView):
                                 "longitude":utils.toRadians(float(longitude)),
                                 "geofence_radius":radius
                                  }
+                            print(data)
                             geofence_serializer = GeofenceSerializer(data=data)
                             if geofence_serializer.is_valid():
                                 geofence_serializer.save()
@@ -59,9 +60,13 @@ class Geo_fence_View(APIView):
                     elif int(request_type) == Constants.REQUEST_ACCESS_GEOFENCE:  
                             query = utils.prepare_geofence_query(latitude,longitude)
                             geofence_objs = Geofence.objects.raw(query)
+                            result_count = 0
+                            for geofence_obj in geofence_objs:
+                                 #print(geofence_obj)
+                                 result_count = result_count + 1
                             gfence_serializer = GeofenceSerializer(geofence_objs,many=True)
-                            if gfence_serializer.data.count >0:
-                                return JsonResponse(gfence_serializer.data,status=201)
+                            if result_count > 0:
+                                return JsonResponse(gfence_serializer.data,safe=False)
                             return JsonResponse({"status":"cant access geofence record"}, status = 400) 
                     return JsonResponse({"status":"API authentication failed"}, status = 400) 
         return JsonResponse({"status":"Unable to fetch user record"}, status = 400)    

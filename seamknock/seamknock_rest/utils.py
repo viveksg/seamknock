@@ -48,9 +48,9 @@ class Utils:
         return (hashed_value == hashed_key)
     
     def prepare_geofence_query(self,lat,lng):
-        lat = self.toRadians(lat)
-        lng = self.toRadians(lng)
-        query = "SELECT * FROM Places WHERE acos(sin({lat}) * sin({self._COL_NAME_LATITUDE}) + cos({lat}) * cos({self._COL_NAME_LATITUDE}) * cos({self._COL_NAME_LATITUDE} - ({lng}))) * {self.__RADIUS} <= {self.__COL_NAME_RADIUS}"
+        lat = self.toRadians(float(lat))
+        lng = self.toRadians(float(lng))
+        query = (f"SELECT * FROM {self.__GEOFENCE_TABLE_NAME} WHERE acos(sin({lat}) * sin({self.__COL_NAME_LATITUDE}) + cos({lat}) * cos({self.__COL_NAME_LATITUDE}) * cos({self.__COL_NAME_LONGITUDE} - ({lng}))) * {self.__RADIUS} <= {self.__COL_NAME_RADIUS}")
         return query
 
     def toRadians(self, val):
