@@ -8,7 +8,7 @@ from seamknock_rest.serializers import UserDetailSerializer, GeofenceSerializer
 from rest_framework import status
 from seamknock_rest.seamconstants import Constants
 from seamknock_rest.utils import Utils
-
+import json
 class UView(APIView):
     def post(self,request,format=None):
         vemailId = request.POST[Constants.CONSTANT_EMAILID]
@@ -74,6 +74,32 @@ class Geo_fence_View(APIView):
     def get(self,request,format = None):
         geofence_serializer = GeofenceSerializer.objects.all()
 
+class QRView(APIView):
+     def post(self,request,format=None):
+        email_id = request.POST[Constants.CONSTANT_EMAILID]
+        api_key = request.POST[Constants.CONSTANT_API_KEY]
+        request_type = request.POST[Constants.CONSTANT_REQUEST_TYPE]
+        user_obj = UserDetail.objects.filter(emailId=email_id)
+        if user_obj.count() > 0:
+            latitude = request.POST[Constants.CONSTANT_LATITUDE]
+            longitude = request.POST[Constants.CONSTANT_LONGITUDE]
+            print(user_obj[0].api_secret)
+            api_secret = user_obj[0].api_secret
+            utils = Utils()
+            if utils.authenticate_api(email_id,api_key,api_secret):
+                lock_id = request.POST[Constants.CONSTANT_LOCKID]
+                qr_data ={
+                     Constants.CONSTANT_LOCKID:lock_id,
+                     Constants.CONSTANT_LATITUDE:latitude,
+                     Constants.CONSTANT_LONGITUDE:longitude
+                }
+                qr_response = HttpResponse(utils.generateQRcode(json.dumps(qr_data)).getvalue())
+                qr_response['Content-type'] = "image/png"
+                qr_response['Cache-Control'] = "max-age=0"
+                return qr_response    
+            return JsonResponse({"status":"API authentication failed"}, status = 400)
+        return JsonResponse({"status":"Unable to fetch user record"}, status = 400)  
+        
 class KnockView(APIView):
     def post(self,request, format = None):
         pass

@@ -2,6 +2,11 @@ from seamknock_rest.seamconstants import Constants
 import random
 import hashlib
 import math
+import pyqrcode
+import png
+from pyqrcode import QRCode
+import io
+
 class Utils:
     __DEFAULT_SEED_LENGTH = 255
     __RADIUS = 6371
@@ -55,5 +60,12 @@ class Utils:
 
     def toRadians(self, val):
         return math.radians(val)
+    
+    def generateQRcode(self,strval):
+        qrval=pyqrcode.create(strval)
+        buffer = io.BytesIO()
+        qrval.png(buffer)
+        print(qrval.text())
+        return buffer
    
     

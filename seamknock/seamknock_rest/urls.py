@@ -7,6 +7,6 @@ urlpatterns = [
        path('registerUser/',views.UView.as_view(), name='ep1'),
        path('registerGeofence/', views.Geo_fence_View.as_view(), name='ep2'),
        path('accessGeofence/',views.Geo_fence_View.as_view(), name='ep3'),
-       path('sknock/',views.Geo_fence_View.as_view(), name='ep3'),
-
+       path('qrGeofence/',views.QRView.as_view(), name='ep4'),
+       path('sknock/',views.Geo_fence_View.as_view(), name='ep5'),
 ]
